@@ -1,7 +1,32 @@
-const { app, BrowserWindow } = require("electron");
-
+const { app, BrowserWindow, ipcMain } = require("electron");
+const sql = require("mssql");
 const path = require('path');
 const url = require('url')
+
+async function connectToDatabase() {
+  const result = undefined
+  try {
+    const configuration = new sql.ConnectionPool({
+      user: "sa",
+      password: "3QuDRJ.f9)",
+      server: "localhost",
+      port: 1433,
+      database: "L4ActivityDb",
+      options: { encrypt: true},
+    });
+
+    const hola = await configuration.connect();
+    var request = new sql.Request(hola);
+    result = await request.query(`SELECT * FROM Treatments`)
+
+    console.log('RESULT:')
+    console.log(result)
+  } catch(err) {
+    console.log(err)
+  }
+
+  return result
+}
 
 let mainWindow;
 function createWindow() {
@@ -11,11 +36,35 @@ function createWindow() {
     slashes: true,
   });
 
-  mainWindow = new BrowserWindow({ width: 800, height: 600 });
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      preload: __dirname + "/preload.js",
+    }
+  });
   mainWindow.loadURL(startUrl)
   mainWindow.webContents.openDevTools();
+
+  connectToDatabase().then((value) => {
+    window.webContents.send('request', value)
+  }, (err) => console.log(err))
   mainWindow.on('closed', () => mainWindow = null);
 }
+
+
+/* TODO: Yo uneed to know how ti mplement this. U:U
+   *useEffect(() => {
+   *  if (isElectron()) {
+   *    console.log(electron.ipcRenderer);
+	 *    electron.ipcRenderer.on('request', (event: any, arg: any) => {
+   *      console.log('DATA::')
+   *      console.log(arg)
+	 *    })
+	 *  }
+   *});
+   */
 
 app.whenReady().then(createWindow);
 

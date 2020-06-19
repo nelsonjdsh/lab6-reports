@@ -24,8 +24,8 @@
   "homepage": "./",
   "main": "src/electron-main.js",
   "scripts": {
-    "start": "export BROWSER=none && react-scripts start",
-    "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "start": "set BROWSER=none && react-scripts start",
+    "start-electron": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
     "react-start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

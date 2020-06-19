@@ -1,26 +1,42 @@
 import React, { useState } from "react";
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box"
 import Button from '@material-ui/core/Button';
 import LocalHospitalTwoToneIcon from '@material-ui/icons/LocalHospitalTwoTone';
 import SaveIcon from '@material-ui/icons/Save';
 import { ReportTitle } from "./ReportTitle";
+import { Treatment } from "./Treatment";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      '& > *': {
-        margin: theme.spacing(1),
-      },
-    },
-  }),
-);
+interface IAddTreatmentFormProps {
+  refresh: (idCard: string) => void; 
+}
 
-export function AddTreatmentForm() {
+async function saveTreatment(treatment: Treatment) {
+  try {
+    console.log('treatment: ', treatment);
+    var response = await fetch(
+      'https://localhost:5001/treatments',
+      { 
+        method: 'POST',
+        mode: 'cors',
+        cache: 'default',
+        body: JSON.stringify(treatment),
+        headers: new Headers({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        })
+      }
+    );
+
+    var treatments = await (response.json());
+    console.log(treatments)
+  } catch(e) {
+    console.log(e);
+  }
+}
+
+export function AddTreatmentForm({ refresh }: IAddTreatmentFormProps) {
   // State.
   const [ idCard, setIdCard ] = useState('');
   const [ medicine, setMedicine ] = useState('');
@@ -28,7 +44,13 @@ export function AddTreatmentForm() {
   const [ nurse, setNurse ] = useState('');
   const [ doctor, setDoctor ] = useState('');
 
-  const classes = useStyles();
+  // Functions.
+  async function handleSave() {
+    const treatment = new Treatment({ nurse, doctor, idCard, medicine, quantity });
+    console.log('handleSave: ', treatment);
+    await saveTreatment(treatment);
+    refresh(idCard);
+  }
 
   return (
     <React.Fragment>
@@ -116,6 +138,7 @@ export function AddTreatmentForm() {
           color="primary"
           size="medium"
           startIcon={<SaveIcon />}
+          onClick={handleSave}
         >
           Guardar Registro
         </Button>

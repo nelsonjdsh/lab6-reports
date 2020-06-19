@@ -30,9 +30,19 @@ function App() {
   // State.
   const [ treatments, setTreatments ] = useState([] as Treatment[])
   const [ matches, setMatches ] = useState([] as Treatment[]);
+  const [ searchKey, setSearchKey ] = useState('');
 
   // Fetching data.
   useEffect(() => { getDataFromDatabase(setTreatments, setMatches) }, []);
+
+
+  // Functions.
+  async function handleRefresh(idCard: string) {
+    await getDataFromDatabase(setTreatments, setMatches); console.log('App.tsx, referesh')
+    setSearchKey(idCard);
+  }
+
+  console.log(`searchKey: <${searchKey}>`)
 
   return (
     <React.Fragment>
@@ -40,7 +50,7 @@ function App() {
       <Container maxWidth="lg" fixed={false}>
         <br />
 
-        <AddTreatmentForm />
+        <AddTreatmentForm refresh={handleRefresh} />
 
         <br />
 
@@ -57,7 +67,10 @@ function App() {
 
         <br />
         
-        <SearchBar setData={setMatches} data={treatments}/>
+          <SearchBar
+            setData={setMatches}
+            data={treatments}
+            searchKey={searchKey} />
 
         <br />
 

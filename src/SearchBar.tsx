@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { Paper, InputBase } from "@material-ui/core"
 import { Treatment } from "./Treatment";
+
+interface ISearchbarProps {
+  setData: any;
+  data: Treatment[];
+  searchKey: string;
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   input: {
@@ -20,26 +26,32 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-interface ISearchbarProps {
-  setData: any;
-  data: Treatment[];
-}
+export function SearchBar({ setData, data, searchKey }: ISearchbarProps) {
+  const [ searchBarkey, setSearchBarKey ] = useState(searchKey)
 
-
-export function SearchBar({ setData, data }: ISearchbarProps) {
-  const classes = useStyles();
-
-  function filterData(searchKey: string) {
+  // Functions.
+  async function filterData(text: string) {
     let filtered: Treatment[] =
-      data.filter((treatment: Treatment) => treatment.idCard === searchKey) 
+      data.filter((treatment: Treatment) => treatment.idCard === text) 
 
-    setData(filtered);
+    console.log('filterData::');
+    console.log('filtered: ', filtered)
+    await setData(filtered);
+    setSearchBarKey(text);
   }
 
+  // Lifcycle.
+  useEffect(() => { filterData(searchKey) }, [searchKey])
+
+  console.log(`searchKey: <${searchKey}>`)
+  console.log(`searchBarKey: <${searchBarkey}>`)
+
+  const classes = useStyles();
   return (
     <Paper component="form" className={classes.root}>
       <InputBase
         className={classes.input}
+        value={searchBarkey}
         onChange={(e) => filterData(e.target.value)}
         placeholder="Buscar por cédula"
           inputProps={{ 'aria-label': 'Buscar con un algoritmo' }}

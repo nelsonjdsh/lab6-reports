@@ -19,6 +19,9 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  columnTitle: {
+    fontWeight: "bold"
+  }
 });
 
 
@@ -30,13 +33,13 @@ export function ReportTable({ treatmentList }: IReportTableProps) {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell align="left">Cédula</TableCell>
-                <TableCell align="left">Medicina</TableCell>
-                <TableCell align="left">Cantidad</TableCell>
-                <TableCell align="left">Enfermera</TableCell>
-                <TableCell align="left">Doctor</TableCell>
-                <TableCell align="left">Fecha de registro</TableCell>
+                <TableCell align="left" className={classes.columnTitle}>ID</TableCell>
+                <TableCell align="left" className={classes.columnTitle}>Cédula</TableCell>
+                <TableCell align="left" className={classes.columnTitle}>Medicina</TableCell>
+                <TableCell align="left" className={classes.columnTitle}>Cantidad</TableCell>
+                <TableCell align="left" className={classes.columnTitle}>Enfermera</TableCell>
+                <TableCell align="left" className={classes.columnTitle}>Doctor</TableCell>
+                <TableCell align="left" className={classes.columnTitle}>Fecha de registro</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

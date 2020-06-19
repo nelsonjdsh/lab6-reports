@@ -34,17 +34,12 @@ export function SearchBar({ setData, data, searchKey }: ISearchbarProps) {
     let filtered: Treatment[] =
       data.filter((treatment: Treatment) => treatment.idCard === text) 
 
-    console.log('filterData::');
-    console.log('filtered: ', filtered)
     await setData(filtered);
     setSearchBarKey(text);
   }
 
   // Lifcycle.
   useEffect(() => { filterData(searchKey) }, [searchKey])
-
-  console.log(`searchKey: <${searchKey}>`)
-  console.log(`searchBarKey: <${searchBarkey}>`)
 
   const classes = useStyles();
   return (

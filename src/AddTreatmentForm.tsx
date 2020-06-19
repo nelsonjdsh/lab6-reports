@@ -14,7 +14,6 @@ interface IAddTreatmentFormProps {
 
 async function saveTreatment(treatment: Treatment) {
   try {
-    console.log('treatment: ', treatment);
     var response = await fetch(
       'https://localhost:5001/treatments',
       { 
@@ -28,9 +27,6 @@ async function saveTreatment(treatment: Treatment) {
         })
       }
     );
-
-    var treatments = await (response.json());
-    console.log(treatments)
   } catch(e) {
     console.log(e);
   }
@@ -47,7 +43,6 @@ export function AddTreatmentForm({ refresh }: IAddTreatmentFormProps) {
   // Functions.
   async function handleSave() {
     const treatment = new Treatment({ nurse, doctor, idCard, medicine, quantity });
-    console.log('handleSave: ', treatment);
     await saveTreatment(treatment);
     refresh(idCard);
   }

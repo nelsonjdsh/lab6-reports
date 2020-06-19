@@ -3,7 +3,7 @@ import { Treatment } from "./Treatment";
 import { ReportTable } from "./ReportTable";
 import { SearchBar } from "./SearchBar";
 import { ReportTitle } from "./ReportTitle";
-import { CssBaseline, Container, Divider } from "@material-ui/core";
+import { CssBaseline, Container, Divider, Box } from "@material-ui/core";
 import { AddTreatmentForm } from "./AddTreatmentForm";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 
@@ -38,41 +38,37 @@ function App() {
 
   // Functions.
   async function handleRefresh(idCard: string) {
-    await getDataFromDatabase(setTreatments, setMatches); console.log('App.tsx, referesh')
+    await getDataFromDatabase(setTreatments, setMatches);
     setSearchKey(idCard);
   }
-
-  console.log(`searchKey: <${searchKey}>`)
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg" fixed={false}>
-        <br />
+        <Box m={2}/>
 
         <AddTreatmentForm refresh={handleRefresh} />
 
-        <br />
-
-        <br />
+        <Box m={6}/>
 
         <Divider />
 
-        <br />
+        <Box m={4}/>
 
         <ReportTitle
           title="Reporte de Tratamientos"
           icon={AssessmentIcon}
           color="#404040" />
 
-        <br />
+        <Box m={1}/>
         
-          <SearchBar
-            setData={setMatches}
-            data={treatments}
-            searchKey={searchKey} />
+        <SearchBar
+          setData={setMatches}
+          data={treatments}
+          searchKey={searchKey} />
 
-        <br />
+        <Box m={1}/>
 
         <ReportTable treatmentList={matches.length > 0 ? matches : treatments }/>
       </Container>

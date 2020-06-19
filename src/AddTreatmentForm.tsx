@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box"
 import Button from '@material-ui/core/Button';
@@ -14,7 +13,7 @@ interface IAddTreatmentFormProps {
 
 async function saveTreatment(treatment: Treatment) {
   try {
-    var response = await fetch(
+     await fetch(
       'https://localhost:5001/treatments',
       { 
         method: 'POST',

@@ -25,11 +25,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 28,
     margin: 4,
   },
+  icon: {
+    fontSize: 50,
+  },
   title: {
   }
 }));
 
-export function ReportTitle() {
+interface IReportTitleProps {
+  title: string;
+  icon: (width: any) => any;
+  color?: string;
+}
+
+function ReportTitle({ title, icon: Icon, color }: IReportTitleProps) {
   const classes = useStyles();
   return (
     <Box 
@@ -38,15 +47,17 @@ export function ReportTitle() {
       justifyItems="center"
       className={classes.titleSection}>
       <Box alignSelf="center">
-        <Avatar className={classes.avatar}>
-          <AssessmentIcon width={40}/>
+        <Avatar className={classes.avatar} style={{ backgroundColor: color }}>
+          <Icon width={40} />
         </Avatar>
       </Box>
       <Box p={2}>
         <Typography variant="h4" className={classes.title}>
-          Reporte de Tratamientos
+          {title}
         </Typography>
       </Box>
     </Box>
   )
 }
+
+export { ReportTitle };

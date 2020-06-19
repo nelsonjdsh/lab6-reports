@@ -3,7 +3,9 @@ import { Treatment } from "./Treatment";
 import { ReportTable } from "./ReportTable";
 import { SearchBar } from "./SearchBar";
 import { ReportTitle } from "./ReportTitle";
-import { CssBaseline, Container } from "@material-ui/core";
+import { CssBaseline, Container, Divider } from "@material-ui/core";
+import { AddTreatmentForm } from "./AddTreatmentForm";
+import AssessmentIcon from "@material-ui/icons/Assessment";
 
 async function getDataFromDatabase(setTreatments: any, setMatches: any) {
   var response = await fetch(
@@ -36,7 +38,22 @@ function App() {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg" fixed={false}>
-        <ReportTitle />
+        <br />
+
+        <AddTreatmentForm />
+
+        <br />
+
+        <br />
+
+        <Divider />
+
+        <br />
+
+        <ReportTitle
+          title="Reporte de Tratamientos"
+          icon={AssessmentIcon}
+          color="#404040" />
 
         <br />
         
@@ -44,7 +61,7 @@ function App() {
 
         <br />
 
-          <ReportTable treatmentList={matches.length > 0 ? matches : treatments }/>
+        <ReportTable treatmentList={matches.length > 0 ? matches : treatments }/>
       </Container>
     </React.Fragment>
   );

@@ -4,9 +4,8 @@ import { ReportTable } from "./ReportTable";
 import { SearchBar } from "./SearchBar";
 import { ReportTitle } from "./ReportTitle";
 import { CssBaseline, Container } from "@material-ui/core";
-import { Agent } from "https";
 
-async function getDataFromDatabase(setTreatments: any) {
+async function getDataFromDatabase(setTreatments: any, setMatches: any) {
   var response = await fetch(
     'https://localhost:5001/treatments',
     { 
@@ -22,14 +21,16 @@ async function getDataFromDatabase(setTreatments: any) {
   var treatments = await (response.json());
 
   setTreatments(treatments);
+  setMatches(treatments);
 }
 
 function App() {
   // State.
   const [ treatments, setTreatments ] = useState([] as Treatment[])
+  const [ matches, setMatches ] = useState([] as Treatment[]);
 
   // Fetching data.
-  useEffect(() => { getDataFromDatabase(setTreatments) }, []);
+  useEffect(() => { getDataFromDatabase(setTreatments, setMatches) }, []);
 
   return (
     <React.Fragment>
@@ -39,11 +40,11 @@ function App() {
 
         <br />
         
-        <SearchBar />
+        <SearchBar setData={setMatches} data={treatments}/>
 
         <br />
 
-        <ReportTable treatmentList={treatments || []}/>
+          <ReportTable treatmentList={matches.length > 0 ? matches : treatments }/>
       </Container>
     </React.Fragment>
   );

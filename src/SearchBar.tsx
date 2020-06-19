@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { Paper, InputBase } from "@material-ui/core"
+import { Treatment } from "./Treatment";
 
 const useStyles = makeStyles((theme: Theme) => ({
   input: {
@@ -19,12 +20,27 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export function SearchBar() {
+interface ISearchbarProps {
+  setData: any;
+  data: Treatment[];
+}
+
+
+export function SearchBar({ setData, data }: ISearchbarProps) {
   const classes = useStyles();
+
+  function filterData(searchKey: string) {
+    let filtered: Treatment[] =
+      data.filter((treatment: Treatment) => treatment.idCard === searchKey) 
+
+    setData(filtered);
+  }
+
   return (
     <Paper component="form" className={classes.root}>
       <InputBase
         className={classes.input}
+        onChange={(e) => filterData(e.target.value)}
         placeholder="Buscar por cédula"
           inputProps={{ 'aria-label': 'Buscar con un algoritmo' }}
       />

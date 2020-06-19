@@ -39,17 +39,9 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-      preload: __dirname + "/preload.js",
-    }
   });
   mainWindow.loadURL(startUrl)
   mainWindow.webContents.openDevTools();
-
-  connectToDatabase().then((value) => {
-    window.webContents.send('request', value)
-  }, (err) => console.log(err))
   mainWindow.on('closed', () => mainWindow = null);
 }
 
@@ -65,6 +57,8 @@ function createWindow() {
 	 *  }
    *});
    */
+
+app.commandLine.appendSwitch('ignore-certificate-errors');
 
 app.whenReady().then(createWindow);
 
